@@ -1,0 +1,62 @@
+model:
+  formula:
+    cost_infant: cost_infant ~ studyarm + eid_total + studyarm:eid_total + (1 + eid_total
+      | country:cluster_num)
+    poc_eid_8wks: poc_eid_8wks ~ studyarm + (1 | country:cluster_num)
+  family:
+    cost_infant: hurdle_gamma
+    poc_eid_8wks: bernoulli
+  data: ce_exp_fw
+priors:
+  prior_1:
+    prior: exponential(2)
+    class: sd
+    coef: Intercept
+    group: country:cluster_num
+    resp: costinfant
+    dpar: ''
+    nlpar: ''
+    lb: .na.character
+    ub: .na.character
+    source: user
+  prior_2:
+    prior: exponential(2)
+    class: sd
+    coef: eid_total
+    group: country:cluster_num
+    resp: costinfant
+    dpar: ''
+    nlpar: ''
+    lb: .na.character
+    ub: .na.character
+    source: user
+  prior_3:
+    prior: normal(5, 1)
+    class: b
+    coef: studyarmVEID
+    group: ''
+    resp: poceid8wks
+    dpar: ''
+    nlpar: ''
+    lb: .na.character
+    ub: .na.character
+    source: user
+  prior_4:
+    prior: normal(-5, 1)
+    class: b
+    coef: ''
+    group: ''
+    resp: poceid8wks
+    dpar: ''
+    nlpar: ''
+    lb: .na.character
+    ub: .na.character
+    source: user
+mcmc:
+  iter: 8000.0
+  warmup: 5500.0
+  adapt_delta: 0.98
+  max_treedepth: 14.0
+  chains: 4.0
+  cores: 5.0
+  seed: 78.0
